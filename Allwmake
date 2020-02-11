@@ -1,0 +1,13 @@
+#!/bin/sh
+
+cd ${0%/*} || exit 1    # run from this directory
+makeType=${1:-libso}
+set -x
+
+./src/Allwmake
+
+wmake  ./applications/utilities/preProcessing/canteraToFPIFoamV301
+wmake  ./applications/utilities/postProcessing/FPIFoamV301Post
+wmake  ./applications/solver/FPIFoamV301
+wmake  ./applications/solver/FPIBuoyantFoam-v3.0.1
+# ----------------------------------------------------------------- end-of-file

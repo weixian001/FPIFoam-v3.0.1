@@ -1,0 +1,11 @@
+# 1 "Make/options"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "Make/options"
+EXE_INC = -I$(LIB_SRC)/transportModels/compressible/lnInclude -I$(LIB_FPIFoamV301_SRC)/TurbulenceModels/turbulenceModels/lnInclude -I$(LIB_FPIFoamV301_SRC)/TurbulenceModels/compressible/lnInclude -I$(LIB_FPIFoamV301_SRC)/thermophysicalModels/specie/lnInclude -I$(LIB_FPIFoamV301_SRC)/thermophysicalModels/reactionThermo/lnInclude -I$(LIB_FPIFoamV301_SRC)/thermophysicalModels/basic/lnInclude -I$(LIB_SRC)/finiteVolume/lnInclude -I$(LIB_SRC)/meshTools/lnInclude -I$(LIB_SRC)/sampling/lnInclude -I$(LIB_FPIFoamV301_SRC)/thermophysicalModels/chemistryModel -I$(LIB_SRC)/ODE/lnInclude -I$(LIB_FPIFoamV301_SRC)/combustionModels/lnInclude -I$(LIB_FPIFoamV301_SRC)/fvOptions/lnInclude
+# 15 "Make/options"
+
+
+EXE_LIBS = -L$(FOAM_USER_LIBBIN) -lFPIFoamV301turbulenceModels -lcompressibleTransportModels -lFPIFoamV301compressibleTurbulenceModels -lFPIFoamV301reactionThermophysicalModels -lFPIFoamV301specie -lFPIFoamV301fluidThermophysicalModels -lFPIFoamV301chemistryModel -lfiniteVolume -lFPIFoamV301fvOptions -lmeshTools -lsampling -lODE -lFPIFoamV301CombustionModels
+# 32 "Make/options"
+ 
