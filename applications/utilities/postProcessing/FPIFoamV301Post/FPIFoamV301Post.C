@@ -203,7 +203,7 @@ int main(int argc, char *argv[])
             sqrt(varZ/max(Z*(1-Z), SMALL))
         );
 
-/*        volScalarField HRR
+        volScalarField HRR
         (
             IOobject
             (
@@ -213,9 +213,10 @@ int main(int argc, char *argv[])
                 IOobject::NO_READ,
                 IOobject::NO_WRITE
             ),
-            mesh
+            mesh,
+            dimensionSet(1,-1,-3,0,0)
         );
-*/
+
         // Interpolate for internal Field
         scalar chiMax = solver.maxChi();
         //scalar chiMin = solver.minChi();
@@ -254,6 +255,7 @@ int main(int argc, char *argv[])
          	 }
 
          	 YCells[cellI] = solver.interpolate(ubIF[cellI], posIF[cellI], i);
+                 HRR[cellI] = he[cellI]*Srr[cellI]*1e-6; //in MW/m^3
            }
         }
 
@@ -268,6 +270,7 @@ int main(int argc, char *argv[])
            fvPatchScalarField& pmu = mu.boundaryField()[patchi];
            fvPatchScalarField& pHe = he.boundaryField()[patchi];
            fvPatchScalarField& pSrr = Srr.boundaryField()[patchi];		//added
+           fvPatchScalarField& pHRR = HRR.boundaryField()[patchi];              //added
 
            forAll(Y, i)
            {
@@ -299,8 +302,8 @@ int main(int argc, char *argv[])
                       pHe[facei] = solver.interpolate(ubP[facei], posP[facei], (solver.sizeTableNames() - 2));
                       pSrr[facei] = solver.interpolate(ubP[facei], posP[facei], (solver.sizeTableNames() - 1));
               	 }
-
              	 pY[facei] = solver.interpolate(ubP[facei], posP[facei], i);
+                 pHRR[facei] = pHe[facei]*pSrr[facei]*1e-6; // in MW/m^3
               }
            }
         }
@@ -308,6 +311,8 @@ int main(int argc, char *argv[])
         // Calculate thermodynamic Properties
         thermo.correct();
 
+        HRR.write();
+/*
         if (selectedFields.empty())
         {
         	forAll(Y, i)
@@ -331,7 +336,7 @@ int main(int argc, char *argv[])
             Info << "Writing field Zeta" << endl;
         	Zeta.write();
         }
-
+*/
     }
 
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
