@@ -92,6 +92,20 @@ Foam::fluidThermo::fluidThermo(const fvMesh& mesh, const word& phaseName)
         ),
         mesh,
         dimensionSet(1, -3, -1, 0, 0)
+    ),
+
+    Qdt_                                       
+    (
+        IOobject
+        (
+            "Qdt",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionSet(1, -1, -3, 0, 0)
     )
 {}
 
@@ -154,6 +168,19 @@ Foam::fluidThermo::fluidThermo
         ),
         mesh,
         dimensionSet(1, -3, -1, 0, 0)
+    ),
+    Qdt_                                       
+    (
+        IOobject
+        (
+            "Qdt",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionSet(1, -1, -3, 0, 0)
     )
 {}
 
@@ -232,4 +259,13 @@ const Foam::volScalarField& Foam::fluidThermo::Srr() const
     return Srr_;
 }
 
+Foam::volScalarField& Foam::fluidThermo::Qdt()                  
+{
+    return Qdt_;
+}
+
+const Foam::volScalarField& Foam::fluidThermo::Qdt() const     
+{
+    return Qdt_;
+}
 // ************************************************************************* //

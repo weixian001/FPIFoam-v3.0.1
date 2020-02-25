@@ -564,10 +564,12 @@ Foam::canteraReader::canteraReader(const IOdictionary& canteraDict, const IOdict
    
    tablesToBeRead_.append("T");
    tablesToBeRead_.append("Z");
+   tablesToBeRead_.append("HeatRR");
    tablesToBeRead_.append("mu");
       
    tableNames_.append("T");
    tableNames_.append("Z");
+   tableNames_.append("HeatRR");
    tableNames_.append("mu");
    tableNames_.append("he");
    tableNames_.append("chi");

@@ -65,6 +65,8 @@ protected:		//added this section
 
     volScalarField Srr_;
 
+    volScalarField Qdt_;
+
 public:
 
     //- Runtime type information
@@ -149,6 +151,10 @@ public:
                 virtual volScalarField& Srr();
 
                 virtual const volScalarField& Srr() const;
+
+                virtual volScalarField& Qdt();
+
+                virtual const volScalarField& Qdt() const;
 };
 
 

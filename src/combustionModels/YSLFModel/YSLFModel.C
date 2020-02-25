@@ -51,7 +51,8 @@ YSLFModel<CombThermoType>::YSLFModel
     Y_(this->thermo().composition().Y()),
     mu_(this->thermo().mu()),
     he_(this->thermo().he()),
-    Srr_(this->thermo().Srr()),			//added             
+    Srr_(this->thermo().Srr()),			//added
+    Qdt_(this->thermo().Qdt()),
     Z_(this->thermo().Z()),
     //Pv_(this->thermo().Pv()),				//added
     varZ_(this->thermo().varZ()),
@@ -88,6 +89,7 @@ template<class CombThermoType>
 hashedWordList YSLFModel<CombThermoType>::tables()
 {
 	hashedWordList tableNames = this->thermo().composition().species();
+	tableNames.append("HeatRR");
 	tableNames.append("mu");
 	tableNames.append("he");
 	tableNames.append("Srr");		//added
@@ -115,6 +117,7 @@ void YSLFModel<CombThermoType>::correct()
     const scalarField& varZCells = varZ_.internalField();
     const scalarField& chiCells = Chi_.internalField();
 
+    scalarField& QdtCells = Qdt_.internalField();
     scalarField& muCells = mu_.internalField();
     scalarField& heCells = he_.internalField();
     scalarField& SrrCells = Srr_.internalField();
@@ -155,6 +158,7 @@ void YSLFModel<CombThermoType>::correct()
                  ubIF_[cellI] = solver_.upperBounds(x);
                  posIF_[cellI] = solver_.position(ubIF_[cellI], x);
                  
+            	 QdtCells[cellI] = solver_.interpolate(ubIF_[cellI], posIF_[cellI], (solver_.sizeTableNames() - 4));
             	 muCells[cellI] = solver_.interpolate(ubIF_[cellI], posIF_[cellI], (solver_.sizeTableNames() - 3));
             	 heCells[cellI] = solver_.interpolate(ubIF_[cellI], posIF_[cellI], (solver_.sizeTableNames() - 2));
             	 SrrCells[cellI] = solver_.interpolate(ubIF_[cellI], posIF_[cellI], (solver_.sizeTableNames() - 1));		//added
@@ -171,6 +175,7 @@ void YSLFModel<CombThermoType>::correct()
           const fvPatchScalarField& pvarZ = varZ_.boundaryField()[patchi];
           const fvPatchScalarField& pZ = Z_.boundaryField()[patchi];
 
+          fvPatchScalarField& pQdt = Qdt_.boundaryField()[patchi];	//added
           fvPatchScalarField& pmu = mu_.boundaryField()[patchi];	//added
           fvPatchScalarField& pHe = he_.boundaryField()[patchi];
           fvPatchScalarField& pSrr = Srr_.boundaryField()[patchi];	//added
@@ -202,7 +207,7 @@ void YSLFModel<CombThermoType>::correct()
                      ubP_[facei] = solver_.upperBounds(x);
                      posP_[facei] = solver_.position(ubP_[facei], x);
 
-                     //pChi[facei] = solver_.interpolate(ubP_[facei], posP_[facei], (solver_.sizeTableNames() - 3));
+                     pQdt[facei] = solver_.interpolate(ubP_[facei], posP_[facei], (solver_.sizeTableNames() - 4));
                      pmu[facei] = solver_.interpolate(ubP_[facei], posP_[facei], (solver_.sizeTableNames() - 3));
                      pHe[facei] = solver_.interpolate(ubP_[facei], posP_[facei], (solver_.sizeTableNames() - 2));
                      pSrr[facei] = solver_.interpolate(ubP_[facei], posP_[facei], (solver_.sizeTableNames() - 1));			//added
